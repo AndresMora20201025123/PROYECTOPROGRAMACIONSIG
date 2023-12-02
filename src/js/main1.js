@@ -9,25 +9,25 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 
 //Capa GeoJSON
-const geojsonLayer = new VectorLayer ({
+const geojsonLayerEstaciones = new VectorLayer ({
   source: new VectorSource ({
       url: '/datos/Estaciones_Troncales_de_TRANSMILENIO.geojson', //Ruta de archivo GeoJSON
       format: new GeoJSON ()
   })
 });
-const geojsonLayer01 = new VectorLayer ({
+const geojsonLayerRutas = new VectorLayer ({
   source: new VectorSource ({
       url: '/datos/Rutas_Troncales_de_TRANSMILENIO.geojson', //Ruta de archivo GeoJSON
       format: new GeoJSON ()
   })
 });
-const geojsonLayer02 = new VectorLayer ({
+const geojsonLayermalla = new VectorLayer ({
   source: new VectorSource ({
       url: '/datos/malla-vial37.geojson', //Ruta de archivo GeoJSON
       format: new GeoJSON ()
   })
 });
-const geojsonLayer03 = new VectorLayer ({
+const geojsonLayerbarrio = new VectorLayer ({
   source: new VectorSource ({
       url: '/datos/barrios-bogota.geojson', //Ruta de archivo GeoJSON
       format: new GeoJSON ()
@@ -52,8 +52,52 @@ var map = new Map({
   })
 });
 
+// Añadir una interacción de selección al mapa
+var selectInteraction = new ol.interaction.Select();
+map.addInteraction(selectInteraction);
 
-map.addLayer (geojsonLayer);
-map.addLayer (geojsonLayer01);
-map.addLayer (geojsonLayer02);
-map.addLayer (geojsonLayer03);
+// Obtener la capa de estaciones
+var stationsLayer = geojsonLayer;
+
+// Crear un elemento HTML que se utilizará para mostrar la información de la estación
+var stationInfoElement = document.createElement('div');
+stationInfoElement.id = 'station-info';
+document.body.appendChild(stationInfoElement);
+
+// Crear una capa Overlay para mostrar el contenido del diálogo
+var stationInfoOverlay = new ol.Overlay({
+  element: stationInfoElement,
+  positioning: 'bottom-center',
+  stopEvent: false
+});
+map.addOverlay(stationInfoOverlay);
+
+// Manejar el evento de clic en la capa de estaciones
+stationsLayer.on('click', function(event) {
+  // Obtener la característica (estación) seleccionada
+  var selectedFeature = event.feature;
+
+  // Obtener los datos de la estación seleccionada
+  var stationData = selectedFeature.getProperties(); // Puedes especificar las propiedades específicas que deseas mostrar
+
+  // Actualizar el contenido del diálogo con la información de la estación
+  stationInfoElement.innerHTML = `
+    <p>Nombre: ${stationData.nombre}</p>
+    <p>Ubicación: ${stationData.ubicacion}</p>
+    <p>...</p>
+  `;
+
+  // Obtener las coordenadas del evento de clic
+  var coordinates = event.coordinate;
+
+  // Mostrar el diálogo en las coordenadas del evento de clic
+  stationInfoOverlay.setPosition(coordinates);
+});
+
+
+
+
+map.addLayer (geojsonLayerEstaciones);
+map.addLayer (geojsonLayerRutas);
+map.addLayer (geojsonLayermalla);
+map.addLayer (geojsonLayerbarrio);
