@@ -94,7 +94,11 @@ stationsLayer.on('click', function(event) {
   stationInfoOverlay.setPosition(coordinates);
 });
 
-
+//Ajustar posicion de las capas
+geojsonLayerEstaciones.setZIndex(4);
+geojsonLayerRutas.setZIndex(3);
+geojsonLayermalla.setZIndex(2);
+geojsonLayerbarrio.setZIndex(1);
 
 
 map.addLayer (geojsonLayerEstaciones);
