@@ -1,9 +1,12 @@
-// main1.js
+// main.js
 //import 'ol/ol.css';
 import  Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
+import GeoJSON from 'ol/format/GeoJSON';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 //Capa GeoJSON
 const geojsonLayer = new VectorLayer ({
@@ -37,10 +40,14 @@ var map = new Map({
   layers: [
     new TileLayer({
       source: new OSM() // Capa base de OpenStreetMap
-    })
+    }),
+    geojsonLayer,
+    geojsonLayer01,
+    geojsonLayer02,
+    geojsonLayer03
   ],
   view: new View({
-    center: [0, 0], // Coordenadas del centro del mapa
+    center: [4, 74], // Coordenadas del centro del mapa
     zoom: 10 // Nivel de zoom inicial
   })
 });
