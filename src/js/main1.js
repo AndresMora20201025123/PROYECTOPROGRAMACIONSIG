@@ -10,7 +10,7 @@ import VectorSource from 'ol/source/Vector';
 import { Overlay } from 'ol';
 import interaction from 'ol/interaction';
 import { Select } from 'ol/interaction'; //Select }
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat } from 'ol/proj.js';
 import { transform } from 'ol/proj';
 
 //Capa GeoJSON
@@ -66,7 +66,7 @@ var map = new Map({
 });
 
 // Añadir una interacción de selección al mapa
-var selectInteraction = new select.Select();
+var selectInteraction = new Select();
 map.addInteraction(selectInteraction);
 
 // Obtener la capa de estaciones
@@ -77,6 +77,7 @@ var stationInfoElement = document.createElement('div');
 stationInfoElement.id = 'station-info';
 document.body.appendChild(stationInfoElement);
 
+
 // Crear una capa Overlay para mostrar el contenido del diálogo
 var stationInfoOverlay = new Overlay({
   element: stationInfoElement,
@@ -85,26 +86,36 @@ var stationInfoOverlay = new Overlay({
 });
 map.addOverlay(stationInfoOverlay);
 
+//Encontrar el elemento HTML con el id "station-info"
+var stationInfoElement = document.getElementById('station-info');
+
 // Manejar el evento de clic en la capa de estaciones
-stationsLayer.on('click', function(event) {
+stationsLayer.on('select', function(event) {
   // Obtener la característica (estación) seleccionada
-  var selectedFeature = event.feature;
+  var selectedFeature = event.selected[0];
 
-  // Obtener los datos de la estación seleccionada
-  var stationData = selectedFeature.getProperties(); // Puedes especificar las propiedades específicas que deseas mostrar
+  if (selectedFeature) {
+    // Obtener los datos de la estación seleccionada
+    var stationData = selectedFeature.getProperties(); // Puedes especificar las propiedades específicas que deseas mostrar
 
-  // Actualizar el contenido del diálogo con la información de la estación
-  stationInfoElement.innerHTML = `
-    <p>Nombre: ${stationData.nombre}</p>
-    <p>Ubicación: ${stationData.ubicacion}</p>
-    <p>...</p>
-  `;
+    // Actualizar el contenido del diálogo con la información de la estación
+    stationInfoElement.innerHTML = `
+      <h2>${stationData.NOMBRE_ESTACION}</h2>
+      <p><strong>Nombre:</strong> ${stationData.NOMBRE_ESTACION}</p>
+      <p><strong>Descripción:</strong> ${stationData.Descripción}</p>
+      <p><strong>Coordenadas:</strong> ${stationData.Coordenadas}</p>
+    `;
 
-  // Obtener las coordenadas del evento de clic
-  var coordinates = event.coordinate;
+    // Obtener las coordenadas de la estación seleccionada
+    var coordinates = selectedFeature.getGeometry().getCoordinates();
 
-  // Mostrar el diálogo en las coordenadas del evento de clic
-  stationInfoOverlay.setPosition(coordinates);
+    // Mostrar el diálogo en las coordenadas de la estación seleccionada
+    stationInfoOverlay.setPosition(coordinates);
+  } else {
+    // Limpiar el contenido del diálogo si no se seleccionó ninguna estación
+    stationInfoElement.innerHTML = '';
+    stationInfoOverlay.setPosition(undefined);
+  }
 });
 
 //Ajustar posicion de las capas
