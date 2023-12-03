@@ -8,11 +8,10 @@ import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Overlay } from 'ol';
-import interaction from 'ol/interaction';
 import { Select } from 'ol/interaction'; //Select }
 import { fromLonLat } from 'ol/proj.js';
-import { transform } from 'ol/proj';
-
+import Style from 'ol/style/Style';
+import Stroke from 'ol/style/Stroke';
 //Capa GeoJSON
 const geojsonLayerEstaciones = new VectorLayer ({
   source: new VectorSource ({
@@ -65,6 +64,46 @@ var map = new Map({
   })
 });
 
+
+// Definir una función para aplicar estilos a las rutas de TransMilenio
+function styleFunction(feature) {
+  var routeName = feature.get('route_name_ruta_troncal'); // Obtener el nombre de la ruta
+
+  // Definir una paleta de colores para las rutas
+  var colorPalette = {
+    ruta1: 'blue',
+    ruta2: 'red',
+    ruta3: 'green',
+    // Agrega aquí más colores y nombres de ruta según tus necesidades
+  };
+
+  // Obtener el color correspondiente al nombre de la ruta
+  var color = colorPalette[routeName] || getRandomColor();
+
+  // Función para generar un color aleatorio en formato hexadecimal
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+
+  // Devolver el estilo con el color correspondiente
+  return new Style({
+    stroke: new Stroke({
+      color: color,
+      width: 2
+    })
+  });
+}
+
+// Aplicar la función de estilo a la capa geojsonLayerRutas
+geojsonLayerRutas.setStyle(styleFunction);
+
+
 // Añadir una interacción de selección al mapa
 var selectInteraction = new Select();
 map.addInteraction(selectInteraction);
@@ -87,7 +126,7 @@ var stationInfoOverlay = new Overlay({
 map.addOverlay(stationInfoOverlay);
 
 //Encontrar el elemento HTML con el id "station-info"
-var stationInfoElement = document.getElementById('station-info');
+/*var stationInfoElement = document.getElementById('station-info');*/
 
 // Manejar el evento de clic en la capa de estaciones
 stationsLayer.on('select', function(event) {
@@ -98,11 +137,11 @@ stationsLayer.on('select', function(event) {
 
   if (selectedFeature) {
     // Obtener los datos de la estación seleccionada
-    var stationData = selectedFeature.getProperties(); // Puedes especificar las propiedades específicas que deseas mostrar
+    var stationData = selectedFeature.getProperties(['nombre_estacion', 'ubicacion_estacion', 'latitud_estacion', 'longitud_estacion']); // Obtener los datos de la estación seleccionada (nombre_estacion, ubicacion_estacion, latitud_estacion, longitud_estacion); // Puedes especificar las propiedades específicas que deseas mostrar
 
     // Actualizar el contenido del diálogo con la información de la estación
     stationInfoElement.innerHTML = `
-      <h2>${stationData.numero_estacion}</h2>
+      <h2>Información de la estación</h2>
       <p><strong>Nombre:</strong> ${stationData.nombre_estacion}</p>
       <p><strong>Descripción:</strong> ${stationData.ubicacion_estacion}</p>
       <p><strong>Coordenadas:</strong> ${stationData.latitud_estacion}, ${stationData.longitud_estacion}</p>
