@@ -91,6 +91,8 @@ var stationInfoElement = document.getElementById('station-info');
 
 // Manejar el evento de clic en la capa de estaciones
 stationsLayer.on('select', function(event) {
+  //Verificacion de desencadenado
+  console.log ('Estacion seleccionada: ', event.selected);
   // Obtener la característica (estación) seleccionada
   var selectedFeature = event.selected[0];
 
@@ -100,10 +102,10 @@ stationsLayer.on('select', function(event) {
 
     // Actualizar el contenido del diálogo con la información de la estación
     stationInfoElement.innerHTML = `
-      <h2>${stationData.NOMBRE_ESTACION}</h2>
-      <p><strong>Nombre:</strong> ${stationData.NOMBRE_ESTACION}</p>
-      <p><strong>Descripción:</strong> ${stationData.Descripción}</p>
-      <p><strong>Coordenadas:</strong> ${stationData.Coordenadas}</p>
+      <h2>${stationData.numero_estacion}</h2>
+      <p><strong>Nombre:</strong> ${stationData.nombre_estacion}</p>
+      <p><strong>Descripción:</strong> ${stationData.ubicacion_estacion}</p>
+      <p><strong>Coordenadas:</strong> ${stationData.latitud_estacion}, ${stationData.longitud_estacion}</p>
     `;
 
     // Obtener las coordenadas de la estación seleccionada
