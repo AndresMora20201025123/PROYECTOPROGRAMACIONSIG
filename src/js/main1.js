@@ -7,6 +7,11 @@ import OSM from 'ol/source/OSM';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import { Overlay } from 'ol';
+import interaction from 'ol/interaction';
+import { Select } from 'ol/interaction'; //Select }
+import { fromLonLat } from 'ol/proj';
+import { transform } from 'ol/proj';
 
 //Capa GeoJSON
 const geojsonLayerEstaciones = new VectorLayer ({
@@ -41,23 +46,23 @@ var map = new Map({
     new TileLayer({
       source: new OSM() // Capa base de OpenStreetMap
     }),
-    geojsonLayer,
-    geojsonLayer01,
-    geojsonLayer02,
-    geojsonLayer03
+    geojsonLayerEstaciones,
+    geojsonLayerRutas,
+    geojsonLayermalla,
+    geojsonLayerbarrio
   ],
   view: new View({
-    center: [4, 74], // Coordenadas del centro del mapa
+    center: fromLonLat([-74.0721, 4.7110]), // Coordenadas del centro del mapa
     zoom: 10 // Nivel de zoom inicial
   })
 });
 
 // Añadir una interacción de selección al mapa
-var selectInteraction = new ol.interaction.Select();
+var selectInteraction = new select.Select();
 map.addInteraction(selectInteraction);
 
 // Obtener la capa de estaciones
-var stationsLayer = geojsonLayer;
+var stationsLayer = geojsonLayerEstaciones;
 
 // Crear un elemento HTML que se utilizará para mostrar la información de la estación
 var stationInfoElement = document.createElement('div');
@@ -65,7 +70,7 @@ stationInfoElement.id = 'station-info';
 document.body.appendChild(stationInfoElement);
 
 // Crear una capa Overlay para mostrar el contenido del diálogo
-var stationInfoOverlay = new ol.Overlay({
+var stationInfoOverlay = new Overlay({
   element: stationInfoElement,
   positioning: 'bottom-center',
   stopEvent: false
@@ -103,5 +108,5 @@ geojsonLayerbarrio.setZIndex(1);
 
 map.addLayer (geojsonLayerEstaciones);
 map.addLayer (geojsonLayerRutas);
-map.addLayer (geojsonLayermalla);
+//map.addLayer (geojsonLayermalla);
 map.addLayer (geojsonLayerbarrio);
