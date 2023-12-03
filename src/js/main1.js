@@ -26,6 +26,13 @@ const geojsonLayerRutas = new VectorLayer ({
       format: new GeoJSON ()
   })
 });
+const geojsonLayerParaderosSITP = new VectorLayer ({
+  source: new VectorSource ({
+      url: '/datos/Paraderos_Zonales_del_SITP.geojson', //Ruta de archivo GeoJSON
+      format: new GeoJSON ()
+  })
+});
+/* Capas opcionales
 const geojsonLayermalla = new VectorLayer ({
   source: new VectorSource ({
       url: '/datos/malla-vial37.geojson', //Ruta de archivo GeoJSON
@@ -37,7 +44,7 @@ const geojsonLayerbarrio = new VectorLayer ({
       url: '/datos/barrios-bogota.geojson', //Ruta de archivo GeoJSON
       format: new GeoJSON ()
   })
-});
+});*/
 
 // Crear una instancia del mapa
 var map = new Map({
@@ -48,12 +55,13 @@ var map = new Map({
     }),
     geojsonLayerEstaciones,
     geojsonLayerRutas,
-    geojsonLayermalla,
-    geojsonLayerbarrio
+    geojsonLayerParaderosSITP,
+    /*geojsonLayermalla,
+    geojsonLayerbarrio*/
   ],
   view: new View({
     center: fromLonLat([-74.0721, 4.7110]), // Coordenadas del centro del mapa
-    zoom: 10 // Nivel de zoom inicial
+    zoom: 12 // Nivel de zoom inicial
   })
 });
 
@@ -100,13 +108,15 @@ stationsLayer.on('click', function(event) {
 });
 
 //Ajustar posicion de las capas
-geojsonLayerEstaciones.setZIndex(4);
-geojsonLayerRutas.setZIndex(3);
-geojsonLayermalla.setZIndex(2);
-geojsonLayerbarrio.setZIndex(1);
+geojsonLayerEstaciones.setZIndex(5);
+geojsonLayerRutas.setZIndex(4);
+geojsonLayerParaderosSITP.setZIndex(3);
+/*geojsonLayermalla.setZIndex(2);
+geojsonLayerbarrio.setZIndex(1);*/
 
 
 map.addLayer (geojsonLayerEstaciones);
 map.addLayer (geojsonLayerRutas);
+map.addLayer (geojsonLayerParaderosSITP);
 //map.addLayer (geojsonLayermalla);
-map.addLayer (geojsonLayerbarrio);
+//map.addLayer (geojsonLayerbarrio);
