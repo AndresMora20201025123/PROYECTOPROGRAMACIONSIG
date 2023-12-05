@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa con Menú</title>
+    <!-- Referencia a Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* 100% del viewport height */
+            background: url('/IMAGENES/Fondo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #content-container {
+            background-color: rgba(255, 255, 255, 0.8); /* Color de fondo con opacidad para que la imagen de fondo sea visible */
+            padding: 20px;
+            max-width: 1200px; /* Máximo ancho del contenedor central */
+            width: 100%; /* Ajuste para que el contenedor sea el 100% del ancho de la ventana */
+            max-height: auto; /* Altura máxima del contenedor central */
+            border-radius: 10px; /* Bordes redondeados para el contenedor central */
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        .menu-item {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .menu-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px; /* Añade bordes redondeados a las imágenes */
+        }
+
+        /* Ajustes para la opción 2 */
+        #opcion2 {
+            overflow: auto; /* Agrega desbordamiento automático para el contenido largo */
+            max-height: calc(100vh - 200px); /* Altura máxima ajustada para el desbordamiento */
+        }
+
+        #opcion2 img {
+            width: 50%; /* Ajusta el ancho de las imágenes al 100% del contenedor */
+            margin-bottom: 20px; /* Agrega espacio inferior entre imágenes y texto */
+        }
+
+        #opcion2 p {
+            padding-right: 15px; /* Añade un pequeño espacio a la derecha para evitar superposiciones */
+        }
+    /* Justifica el texto en todos los elementos <p> */
+    p {
+        text-align: justify;
+    }
+    </style>
+</head>
+<body>
+    <div id="content-container" class="container"> <!-- Agrega la clase "container" para mantener el diseño de Bootstrap -->
+        <header class="bg-dark text-white text-center py-3">
+            <h1>Mapa interactivo TransMilenio Bogotá</h1>
+        </header>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showOp('opcion1')">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showOp('opcion2')">Sobre TransMilenio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showOp('opcion3')">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="menu-item" id="opcion1">
+            <p>A continuación, encontrarás una herramienta útil para planear viajes en el sistema de transporte público de la ciudad. El mapa muestra la ubicación de todas las estaciones, portales y servicios de TransMilenio, así como información sobre los recorridos y horarios de operación. Para usar el mapa, simplemente haz clic en una estación para obtener más información sobre las rutas que pasan por esta.</p>
+   <!-- El div que contendrá el mapa -->
+
+        <div id="map" style="display:none;"></div>
+
+   <!-- El div que contendrá el mapa -->
+
+        </div>
+
+        <div class="menu-item" id="opcion2" style="display:none;">
+            <h2>¿Qué es?</h2>
+            <p>TransMilenio es un sistema de transporte masivo de Bogotá, Colombia. Es un sistema de autobús de tránsito rápido (BRT) que consta de carriles exclusivos para autobuses, estaciones elevadas y plataformas de acceso.</p>
+            <img src="/IMAGENES/SobreTM.JPG" alt="Imagen Opción 2">
+            <h2>¿Cómo funciona?</h2>
+            <p>TransMilenio funciona con un sistema prepago. Los usuarios utilizan tarjetas inteligentes para acceder a las estaciones donde abordan los buses por múltiples puertas. El sistema opera con el número de buses adecuado para atender la demanda de transporte, funcionando ágil y armónicamente conforme a una planeación previa y centralizada. Incluye servicios troncales (expresos y corrientes) y servicios alimentadores.</p>
+            <h2>Costo del Sistema de transporte</h2>
+            <img src="/IMAGENES/Tarifas.JPG" alt="Imagen Opción 2">
+        </div>
+
+        <div class="menu-item" id="opcion3" style="display:none;">
+            <h2>El grupo de soporte está conformado por</h2>
+            <p>Andres - andres@udistrital</p>
+            <p>La otra muchacha - ella@udistrital</p>
+            <p>Valentina - vcangrejos@udistrital.edu.co</p>
+            <img src="/IMAGENES/LOGO_ICG.png" alt="Imagen Opción 3">
+        </div>
+    </div>
+
+    <!-- Agrega la referencia a Bootstrap JS y jQuery (necesario para algunos componentes de Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        function initMap() {
+            // Tu código de inicialización del mapa aquí
+        }
+
+        function showOp(option) {
+            // Oculta todas las secciones y muestra solo la correspondiente a la opción seleccionada
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('opcion1').style.display = 'none';
+            document.getElementById('opcion2').style.display = 'none';
+            document.getElementById('opcion3').style.display = 'none';
+
+            document.getElementById(option).style.display = 'block';
+
+            // Si la opción seleccionada es 'map', muestra el mapa
+            if (option === 'map') {
+                document.getElementById('map').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
